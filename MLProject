@@ -1,0 +1,17 @@
+name: multistep
+
+conda_env: conda.yaml
+
+entry_points:
+	etl:
+		parameters:
+			data_file: path
+		command: "python etl.py -data {data_file}"
+	
+	train:
+		parameters:
+		command:
+
+	main: 
+		parameters:
+		command:
