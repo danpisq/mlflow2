@@ -19,34 +19,35 @@ def eval_metrics(actual, pred):
 @click.option("--alpha", default=0.1)
 @click.option("--l1-ratio", default=0.1)
 def train(data_file, alpha, l1_ratio):
-	df = pd.read_csv(data_file)
+	with mlflow.start_run():
+		df = pd.read_csv(data_file)
 
-	train, test = train_test_split(df)
+		train, test = train_test_split(df)
 
-	X_train = train.drop(['quality'], axis=1)
-	X_test = test.drop(['quality'], axis=1)
-	y_train = train['quality']
-	y_test = test['quality']
+		X_train = train.drop(['quality'], axis=1)
+		X_test = test.drop(['quality'], axis=1)
+		y_train = train['quality']
+		y_test = test['quality']
 
 
-	model = ElasticNet(alpha=alpha, l1_ratio=l1_ratio)
-	model.fit(X_train, y_train)
+		model = ElasticNet(alpha=alpha, l1_ratio=l1_ratio)
+		model.fit(X_train, y_train)
 
-	predicted_qualities = model.predict(X_test)
-	(rmse, mae, r2) = eval_metrics(y_test, predicted_qualities)
+		predicted_qualities = model.predict(X_test)
+		(rmse, mae, r2) = eval_metrics(y_test, predicted_qualities)
 
-	print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
-	print("  RMSE: %s" % rmse)
-	print("  MAE: %s" % mae)
-	print("  R2: %s" % r2)
+		print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
+		print("  RMSE: %s" % rmse)
+		print("  MAE: %s" % mae)
+		print("  R2: %s" % r2)
 
-	mlflow.log_param("alpha", alpha)
-	mlflow.log_param("l1_ratio", l1_ratio)
-	mlflow.log_metric("rmse", rmse)
-	mlflow.log_metric("r2", r2)
-	mlflow.log_metric("mae", mae)
+		mlflow.log_param("alpha", alpha)
+		mlflow.log_param("l1_ratio", l1_ratio)
+		mlflow.log_metric("rmse", rmse)
+		mlflow.log_metric("r2", r2)
+		mlflow.log_metric("mae", mae)
 
-	mlflow.sklearn.log_model(model, "model")
+		mlflow.sklearn.log_model(model, "model")
 
 
 

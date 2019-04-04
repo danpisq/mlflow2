@@ -1,5 +1,5 @@
 import os
-import click
+
 import mlflow
 import tempfile
 import pandas as pd
@@ -26,11 +26,9 @@ def transform(data_frame):
 	return scaled_df
 
 
-@click.command()
-@click.option("--training_data", default="./wine-quality.csv" )
-def etl_data(training_data):
+def etl_data():
 	with mlflow.start_run():
-		transformed_df = transform( pd.read_csv(training_data) )
+		transformed_df = transform( pd.read_csv("./wine-quality.csv") )
 
 		mlflow.log_param("norm", "MinMaxScaler")
 		mlflow.log_metric("cols", transformed_df.shape[1])
