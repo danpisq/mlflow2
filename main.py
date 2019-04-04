@@ -76,7 +76,7 @@ def main(data_file, alpha, l1_ratio):
 		
 		etl_data_uri = os.path.join(load_etl_run.info.artifact_uri, "training_data.csv")
 
-		train_run = _get_or_run("train", {"alpha":alpha, "l1_ratio":l1_ratio, "data-file":etl_data_uri}, source_version)
+		train_run = _get_or_run("train", {"alpha":alpha, "l1-ratio":l1_ratio, "data-file":etl_data_uri}, source_version)
 
 
 if __name__ == '__main__':
