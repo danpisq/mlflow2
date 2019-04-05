@@ -30,7 +30,7 @@ def etl_data():
 	with mlflow.start_run():
 		transformed_df = transform( pd.read_csv("./wine-quality.csv") )
 
-		mlflow.log_param("norm", "MinMaxScaler")
+		mlflow.log_param("scaling", "StandardScaler")
 		mlflow.log_metric("cols", transformed_df.shape[1])
 		mlflow.log_metric("rows", transformed_df.shape[0])
 

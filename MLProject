@@ -8,14 +8,13 @@ entry_points:
  
   train:
     parameters:
-      data-file: path
+      run-id: string
       alpha: {type: float, default: 0.1}
       l1-ratio: {type: float, default: 0.1}
-    command: "python train.py --data-file {data-file} --alpha {alpha} --l1-ratio {l1-ratio}"
+    command: "python train.py --run-id {run-id} --alpha {alpha} --l1-ratio {l1-ratio}"
 
   main: 
     parameters:
-      data-file: path
       alpha: {type: float, default: 0.1}
       l1-ratio: {type: float, default: 0.1}
-    command: "python main.py --data-file {data-file} --alpha {alpha} --l1-ratio {l1-ratio}"
+    command: "python main.py  --alpha {alpha} --l1-ratio {l1-ratio}"
