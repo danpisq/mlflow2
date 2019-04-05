@@ -4,7 +4,6 @@ import os
 import mlflow
 import click
 
-import mlflow
 from mlflow.entities import RunStatus, Run
 from mlflow.utils.logging_utils import eprint
 import six
@@ -66,17 +65,13 @@ def _get_or_run(entrypoint, parameters, source_version, use_cache=True):
 
 
 @click.command()
-@click.option("--data-file", default="wine-quality.csv")
 @click.option("--alpha")
 @click.option("--l1-ratio")
-def main(data_file, alpha, l1_ratio):
-	with mlflow.start_run() as active_run:
-		source_version = active_run.info.source_version
-		load_etl_run = _get_or_run("etl", {}, source_version)
-		
-		etl_data_uri = os.path.join(load_etl_run.info.artifact_uri, "training_data.csv")
-
-		train_run = _get_or_run("train", {"alpha":alpha, "l1-ratio":l1_ratio, "data-file":etl_data_uri}, source_version)
+def main(alpha, l1_ratio):
+    with mlflow.start_run() as active_run:
+        source_version = active_run.info.source_version
+        load_etl_run = _get_or_run("etl", {}, source_version)
+        train_run = _get_or_run("train", {"alpha":alpha, "l1-ratio":l1_ratio, "run-id":load_etl_run.info.run_uuid}, source_version)
 
 
 if __name__ == '__main__':
